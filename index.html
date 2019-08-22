@@ -31,28 +31,49 @@
         [0, 1, 2],
       ];
 
-      let htmlStr = '';
-      for (let i = 0; i < gameBoard.length; i += 1) {
-        const currentRow = gameBoard[i];
-        htmlStr += '<div class="row">';
+      function updateUI() {
+        let htmlStr = '';
+        for (let i = 0; i < gameBoard.length; i += 1) {
+          const currentRow = gameBoard[i];
+          htmlStr += '<div class="row">';
 
-        console.log('currentRow', currentRow);
+          console.log('currentRow', currentRow);
 
-        for (let j = 0; j < currentRow.length; j += 1) {
-          const currentSpace = currentRow[j];
-          if (currentSpace === 0) {
-            htmlStr += '<div class="space blank"></div>';
-          } else if (currentSpace === 1) {
-            htmlStr += '<div class="space red"></div>';
-          } else {
-            htmlStr += '<div class="space blue"></div>';
+          for (let j = 0; j < currentRow.length; j += 1) {
+            const currentSpace = currentRow[j];
+            if (currentSpace === 0) {
+              htmlStr += `<div data-row=${i} data-column=${j} class="space blank"></div>`;
+            } else if (currentSpace === 1) {
+              htmlStr += `<div data-row=${i} data-column=${j} class="space red"></div>`;
+            } else {
+              htmlStr += `<div data-row=${i} data-column=${j} class="space blue"></div>`;
+            }
           }
+          htmlStr += '</div>';
         }
-        htmlStr += '</div>';
+
+        const board = document.getElementById('board');
+        board.innerHTML = htmlStr;
+        addListeners();
       }
 
-      const board = document.getElementById('board');
-      board.innerHTML = htmlStr;
+      function addListeners() {
+        const spaces = document.querySelectorAll('.space');
+        for (let i = 0; i < spaces.length; i += 1) {
+          const currentSpace = spaces[i];
+
+          currentSpace.onclick = function(event) {
+            console.log('event', event.target.dataset);
+
+            const row = parseInt(event.target.dataset.row);
+            const column = parseInt(event.target.dataset.column);
+            gameBoard[row][column] = 2;
+            updateUI();
+          }
+        }
+      }
+
+      updateUI();
     </script>
   </body>
 </html>
