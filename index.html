@@ -6,6 +6,7 @@
         height: 50px;
         background-color: #eee;
         display: inline-block;
+        margin: 1px;
       }
 
       .blank {
@@ -22,22 +23,36 @@
     </style>
   </head>
   <body>
-    <div id="board">
-      <div class="row">
-        <div class="space blank"></div>
-        <div class="space red"></div>
-        <div class="space blue"></div>
-      </div>
-      <div class="row">
-        <div class="space blank"></div>
-        <div class="space red"></div>
-        <div class="space blue"></div>
-      </div>
-      <div class="row">
-        <div class="space blank"></div>
-        <div class="space red"></div>
-        <div class="space blue"></div>
-      </div>
-    </div>
+    <div id="board"></div>
+    <script>
+      const gameBoard = [
+        [0, 1, 2],
+        [0, 1, 2],
+        [0, 1, 2],
+      ];
+
+      let htmlStr = '';
+      for (let i = 0; i < gameBoard.length; i += 1) {
+        const currentRow = gameBoard[i];
+        htmlStr += '<div class="row">';
+
+        console.log('currentRow', currentRow);
+
+        for (let j = 0; j < currentRow.length; j += 1) {
+          const currentSpace = currentRow[j];
+          if (currentSpace === 0) {
+            htmlStr += '<div class="space blank"></div>';
+          } else if (currentSpace === 1) {
+            htmlStr += '<div class="space red"></div>';
+          } else {
+            htmlStr += '<div class="space blue"></div>';
+          }
+        }
+        htmlStr += '</div>';
+      }
+
+      const board = document.getElementById('board');
+      board.innerHTML = htmlStr;
+    </script>
   </body>
 </html>
