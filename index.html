@@ -26,9 +26,9 @@
     <div id="board"></div>
     <script>
       const gameBoard = [
-        [0, 1, 2],
-        [0, 1, 2],
-        [0, 1, 2],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
       ];
 
       function updateUI() {
@@ -54,8 +54,48 @@
 
         const board = document.getElementById('board');
         board.innerHTML = htmlStr;
+        if (checkWinner()) {
+          console.log("YOU WIN!!");
+        }
         addListeners();
       }
+
+      function checkWinner() {
+        const rowsResult = checkRows();
+        const columnsResult = checkColumns();
+        // const diagonalsResult = checkDiagonals();
+
+        return rowsResult || columnsResult;
+      }
+
+      function checkRows() {
+        // go through each row
+        for (let i = 0; i < gameBoard.length; i += 1) {
+          const currentRow = gameBoard[i];
+
+          if (currentRow[0] === currentRow[1] && currentRow[1] === currentRow[2] && currentRow[0] !== 0) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      function checkColumns() {
+        for (let i = 0; i < 3; i += 1) {
+          if (gameBoard[0][i] === gameBoard[1][i] && gameBoard[1][i] === gameBoard[2][i] && gameBoard[0][i] !== 0) {
+            return true
+          }
+        }
+
+        return false;
+      }
+
+      function checkDiagonals() {
+        return false;
+      }
+
+      let currentPlayer = 1;
 
       function addListeners() {
         const spaces = document.querySelectorAll('.space');
@@ -67,7 +107,16 @@
 
             const row = parseInt(event.target.dataset.row);
             const column = parseInt(event.target.dataset.column);
-            gameBoard[row][column] = 2;
+
+            gameBoard[row][column] = currentPlayer;
+
+            if (currentPlayer === 1) {
+              currentPlayer = 2;
+            } else {
+              currentPlayer = 1;
+            }
+
+            // switch player
             updateUI();
           }
         }
